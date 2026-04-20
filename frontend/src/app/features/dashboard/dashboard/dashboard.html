@@ -1,0 +1,74 @@
+<div class="header-actions">
+  <h1 class="page-title text-gradient">Admin Dashboard</h1>
+  <button mat-button color="primary" (click)="loadStats()"><mat-icon>refresh</mat-icon> Refresh Sync</button>
+</div>
+
+<div class="loading-shade" *ngIf="isLoading()">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="dashboard-content" *ngIf="!isLoading() && stats() as data">
+  
+  <div class="kpi-grid mt-4">
+    <div class="kpi-card glass-panel kpi-books">
+      <div class="kpi-icon"><mat-icon>library_books</mat-icon></div>
+      <div class="kpi-details">
+        <h3>Total Books</h3>
+        <span class="kpi-value">{{ data.totalBooks }}</span>
+      </div>
+    </div>
+    
+    <div class="kpi-card glass-panel kpi-members">
+      <div class="kpi-icon"><mat-icon>people</mat-icon></div>
+      <div class="kpi-details">
+        <h3>Total Members</h3>
+        <span class="kpi-value">{{ data.totalMembers }}</span>
+      </div>
+    </div>
+    
+    <div class="kpi-card glass-panel kpi-borrows">
+      <div class="kpi-icon"><mat-icon>import_export</mat-icon></div>
+      <div class="kpi-details">
+        <h3>Active Borrows</h3>
+        <span class="kpi-value">{{ data.activeBorrows }}</span>
+      </div>
+    </div>
+    
+    <div class="kpi-card glass-panel kpi-overdue">
+      <div class="kpi-icon"><mat-icon>warning</mat-icon></div>
+      <div class="kpi-details">
+        <h3>Overdue</h3>
+        <span class="kpi-value">{{ data.overdueBorrows }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-grid mt-4">
+    <div class="chart-container glass-panel">
+      <h3>Books by Category</h3>
+      <div class="chart-wrapper">
+        <canvas baseChart
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          [type]="'pie'">
+        </canvas>
+      </div>
+    </div>
+    
+    <div class="recent-borrows-container glass-panel p-4">
+      <h3>Recent Borrows</h3>
+      <div class="empty-state" *ngIf="!data.recentBorrows || data.recentBorrows.length === 0">
+        <mat-icon>history</mat-icon>
+        <p>No recent activity detected.</p>
+      </div>
+      
+      <mat-list *ngIf="(data.recentBorrows?.length || 0) > 0">
+        <mat-list-item *ngFor="let record of data.recentBorrows | slice:0:5">
+          <mat-icon matListItemIcon>book</mat-icon>
+          <div matListItemTitle>{{ record.book.title }}</div>
+          <div matListItemLine>Borrowed by {{ record.member.name }} &bull; Due: {{ record.dueDate | date:'mediumDate' }}</div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>

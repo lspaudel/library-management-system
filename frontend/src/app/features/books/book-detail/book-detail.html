@@ -1,0 +1,76 @@
+<div class="header-actions mb-4">
+  <button mat-button routerLink="/books" color="primary">
+    <mat-icon>arrow_back</mat-icon> Back to Library
+  </button>
+</div>
+
+<div class="loading-shade" *ngIf="isLoading()">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="book-detail-wrapper" *ngIf="!isLoading() && book() as b">
+  <div class="book-cover-container glass-panel">
+    <img [src]="b.imageUrl || 'https://via.placeholder.com/400x600?text=No+Cover'" alt="Book cover" class="book-cover">
+  </div>
+  
+  <div class="book-info">
+    <div class="category-badge">{{ b.category?.name }}</div>
+    <h1 class="book-title text-gradient">{{ b.title }}</h1>
+    <h3 class="author-name">By {{ b.author?.name }}</h3>
+    
+    <div class="metadata mt-4">
+      <div class="metadata-item glass-panel">
+        <mat-icon class="text-primary">menu_book</mat-icon>
+        <div class="meta-content">
+          <span class="meta-label">ISBN</span>
+          <span class="meta-value">{{ b.isbn }}</span>
+        </div>
+      </div>
+      
+      <div class="metadata-item glass-panel">
+        <mat-icon class="text-primary">calendar_today</mat-icon>
+        <div class="meta-content">
+          <span class="meta-label">Published</span>
+          <span class="meta-value">{{ b.publishedYear }}</span>
+        </div>
+      </div>
+      
+      <div class="metadata-item glass-panel">
+        <mat-icon [class.text-success]="b.availableQty > 0" [class.text-danger]="b.availableQty === 0">
+          {{ b.availableQty > 0 ? 'check_circle' : 'cancel' }}
+        </mat-icon>
+        <div class="meta-content">
+          <span class="meta-label">Availability</span>
+          <span class="meta-value">{{ b.availableQty }} / {{ b.quantity }} copies</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="description mt-4">
+      <h3>About this book</h3>
+      <p>{{ b.description }}</p>
+    </div>
+    
+    <mat-divider class="my-4"></mat-divider>
+    
+    <div class="action-buttons">
+      <button mat-flat-button class="btn-primary" [disabled]="b.availableQty === 0" (click)="borrowBook()">
+        <mat-icon>assignment_return</mat-icon> Borrow Now
+      </button>
+      
+      <button mat-stroked-button color="primary" [disabled]="b.availableQty === 0" (click)="reserveBook()">
+        <mat-icon>bookmark_add</mat-icon> Reserve
+      </button>
+
+      <ng-container *ngIf="isAdmin()">
+        <span class="spacer"></span>
+        <button mat-icon-button color="primary" aria-label="Edit book">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" aria-label="Delete book">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

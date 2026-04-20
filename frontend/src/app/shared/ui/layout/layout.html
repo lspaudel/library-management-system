@@ -1,0 +1,64 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidebar -->
+  <mat-sidenav #sidenav class="sidenav" mode="side" opened="true">
+    <div class="sidebar-header">
+      <mat-icon class="logo-icon">auto_stories</mat-icon>
+      <h2 class="logo-text">Lumina</h2>
+    </div>
+    
+    <mat-nav-list class="nav-links">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" *ngIf="authService.isAdmin()">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      
+      <a mat-list-item routerLink="/books" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>library_books</mat-icon>
+        <span matListItemTitle>Books</span>
+      </a>
+      
+      <a mat-list-item routerLink="/borrows" routerLinkActive="active-link" *ngIf="authService.isAdmin()">
+        <mat-icon matListItemIcon>assignment_return</mat-icon>
+        <span matListItemTitle>Borrows</span>
+      </a>
+      
+      <a mat-list-item routerLink="/members" routerLinkActive="active-link" *ngIf="authService.isAdmin()">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Members</span>
+      </a>
+      
+      <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>My Profile</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidebar-footer">
+      <button mat-button color="warn" (click)="logout()" style="width: 100%; border-radius: 8px;">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <!-- Navbar / Toolbar -->
+    <mat-toolbar color="primary" class="main-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      
+      <span class="spacer"></span>
+      
+      <div class="user-greeting" *ngIf="userSignal() as user">
+        <span>Hi, <strong>{{ user.sub }}</strong></span>
+        <div class="avatar">{{ user.sub.charAt(0).toUpperCase() }}</div>
+      </div>
+    </mat-toolbar>
+
+    <!-- Content Area -->
+    <main class="page-container animate-fade-in">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
