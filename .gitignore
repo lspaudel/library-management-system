@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+*.sublime-workspace
+
+# Angular environment files (if containing secrets)
+src/environments/environment.*.ts
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+
+# Misc
+*.local
