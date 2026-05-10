@@ -41,7 +41,7 @@ export class BookService {
     if (categoryId) params = params.set('categoryId', categoryId.toString());
     if (authorId) params = params.set('authorId', authorId.toString());
 
-    return this.http.get<PaginatedResponse<Book>>(`${environment.apiUrl}/books/search`, { params });
+    return this.http.get<PaginatedResponse<Book>>(`${environment.apiUrl}/books`, { params });
   }
 
   getBook(id: number): Observable<any> {
